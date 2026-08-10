@@ -1,21 +1,12 @@
-```php
 <?php
-
-declare(strict_types=1);
 
 define('TITLE', 'Verify Email');
 
-require_once '../assets/layouts/header.php';
+include '../assets/layouts/header.php';
 
 check_logged_in_butnot_verified();
 
-/*
-|--------------------------------------------------------------------------
-| Mensagem de status
-|--------------------------------------------------------------------------
-| Recupera a mensagem da sessão e remove após a leitura para evitar
-| que ela seja exibida novamente ao atualizar a página.
-*/
+// Recupera a mensagem da sessão com segurança.
 $verifyMessage = '';
 
 if (
@@ -23,26 +14,29 @@ if (
     is_string($_SESSION['STATUS']['verify'])
 ) {
     $verifyMessage = $_SESSION['STATUS']['verify'];
+
+    // Flash message: remove após ser recuperada.
     unset($_SESSION['STATUS']['verify']);
 }
 
 ?>
 
 <main role="main" class="container">
+
     <div class="row">
 
         <div class="col-sm-3">
-            <?php require '../assets/layouts/profile-card.php'; ?>
+            <?php include '../assets/layouts/profile-card.php'; ?>
         </div>
 
-        <div
-            class="shadow-lg box-shadow col-sm-7 px-5 m-5 bg-light rounded align-self-center verify-message"
-        >
+        <div class="shadow-lg box-shadow col-sm-7 px-5 m-5 bg-light rounded align-self-center verify-message">
+
             <form
                 action="includes/sendverificationemail.inc.php"
                 method="post"
                 autocomplete="off"
             >
+
                 <?php insert_csrf_token(); ?>
 
                 <h5 class="text-center mb-5 text-primary">
@@ -52,6 +46,7 @@ if (
                 <p>
                     Before proceeding, please check your email for a verification link.
                     If you did not receive the email,
+
                     <button
                         type="submit"
                         name="verifysubmit"
@@ -63,8 +58,9 @@ if (
                 </p>
 
                 <?php if ($verifyMessage !== ''): ?>
+
                     <div class="text-center mt-5">
-                        <h6 class="text-success" role="status">
+                        <h6 class="text-success">
                             <?= htmlspecialchars(
                                 $verifyMessage,
                                 ENT_QUOTES | ENT_SUBSTITUTE,
@@ -72,12 +68,15 @@ if (
                             ); ?>
                         </h6>
                     </div>
+
                 <?php endif; ?>
+
             </form>
+
         </div>
 
     </div>
+
 </main>
 
-<?php require_once '../assets/layouts/footer.php'; ?>
-```
+<?php include '../assets/layouts/footer.php'; ?>
