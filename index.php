@@ -1,16 +1,21 @@
+```php
 <?php
+
+declare(strict_types=1);
 
 define('TITLE', 'Verify Email');
 
-include '../assets/layouts/header.php';
+require_once '../assets/layouts/header.php';
 
-// Impede acesso de usuários não autenticados ou já verificados.
 check_logged_in_butnot_verified();
 
-/**
- * Obtém a mensagem flash de verificação com segurança
- * e a remove da sessão após a leitura.
- */
+/*
+|--------------------------------------------------------------------------
+| Mensagem de status
+|--------------------------------------------------------------------------
+| Recupera a mensagem da sessão e remove após a leitura para evitar
+| que ela seja exibida novamente ao atualizar a página.
+*/
 $verifyMessage = '';
 
 if (
@@ -27,11 +32,12 @@ if (
     <div class="row">
 
         <div class="col-sm-3">
-            <?php include '../assets/layouts/profile-card.php'; ?>
+            <?php require '../assets/layouts/profile-card.php'; ?>
         </div>
 
-        <div class="shadow-lg box-shadow col-sm-7 px-5 m-5 bg-light rounded align-self-center verify-message">
-
+        <div
+            class="shadow-lg box-shadow col-sm-7 px-5 m-5 bg-light rounded align-self-center verify-message"
+        >
             <form
                 action="includes/sendverificationemail.inc.php"
                 method="post"
@@ -45,9 +51,7 @@ if (
 
                 <p>
                     Before proceeding, please check your email for a verification link.
-
                     If you did not receive the email,
-
                     <button
                         type="submit"
                         name="verifysubmit"
@@ -59,22 +63,21 @@ if (
                 </p>
 
                 <?php if ($verifyMessage !== ''): ?>
-                    <div
-                        class="alert alert-success text-center mt-5"
-                        role="alert"
-                    >
-                        <?= htmlspecialchars(
-                            $verifyMessage,
-                            ENT_QUOTES | ENT_SUBSTITUTE,
-                            'UTF-8'
-                        ); ?>
+                    <div class="text-center mt-5">
+                        <h6 class="text-success" role="status">
+                            <?= htmlspecialchars(
+                                $verifyMessage,
+                                ENT_QUOTES | ENT_SUBSTITUTE,
+                                'UTF-8'
+                            ); ?>
+                        </h6>
                     </div>
                 <?php endif; ?>
-
             </form>
-
         </div>
+
     </div>
 </main>
 
-<?php include '../assets/layouts/footer.php'; ?>
+<?php require_once '../assets/layouts/footer.php'; ?>
+```
