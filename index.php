@@ -1,52 +1,61 @@
 <?php
 
-define('TITLE', "Verify Email");
-include '../assets/layouts/header.php';
-check_logged_in_butnot_verified(); 
+define('TITLE', 'Verify Email');
+
+require_once '../assets/layouts/header.php';
+
+check_logged_in_butnot_verified();
+
+$statusMessage = $_SESSION['STATUS']['verify'] ?? '';
 
 ?>
 
-
-<main role="main" class="container">
-
+<main class="container" role="main">
     <div class="row">
-        <div class="col-sm-3">
 
-            <?php include('../assets/layouts/profile-card.php'); ?>
+        <aside class="col-sm-3">
+            <?php require '../assets/layouts/profile-card.php'; ?>
+        </aside>
 
-        </div>
-        <div class="shadow-lg box-shadow col-sm-7 px-5 m-5 bg-light rounded align-self-center verify-message">
-
+        <section
+            class="col-sm-7 m-5 px-5 align-self-center bg-light rounded shadow-lg box-shadow verify-message"
+            aria-labelledby="verify-email-title"
+        >
             <form action="includes/sendverificationemail.inc.php" method="post">
 
                 <?php insert_csrf_token(); ?>
-            
-                <h5 class="text-center mb-5 text-primary">Verify Your Email Address</h5>
+
+                <h1
+                    id="verify-email-title"
+                    class="h5 text-center text-primary mb-5"
+                >
+                    Verify Your Email Address
+                </h1>
 
                 <p>
-                    Before proceeding, please check your email for a verification link. If you did not receive the email,
-                    <button type="submit" name="verifysubmit">click here to send another</button>.
+                    Before proceeding, please check your email for a verification link.
+                    If you did not receive the email,
+                    <button
+                        type="submit"
+                        name="verifysubmit"
+                        class="btn btn-link p-0 align-baseline"
+                    >
+                        click here to send another
+                    </button>.
                 </p>
-                <br>
-                <div class="text-center mt-5">
-                    <h6 class="text-success">
-                        <?php
-                            if (isset($_SESSION['STATUS']['verify']))
-                                echo $_SESSION['STATUS']['verify'];
 
-                        ?>
-                    </h6>
-                </div>
+                <?php if ($statusMessage !== ''): ?>
+                    <div class="text-center mt-5">
+                        <p class="text-success mb-0">
+                            <?= htmlspecialchars($statusMessage, ENT_QUOTES, 'UTF-8'); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
 
             </form>
+        </section>
 
-        </div>
     </div>
 </main>
 
-
-<?php
-
-include '../assets/layouts/footer.php'
-
-?>
+<?php require_once '../assets/layouts/footer.php'; ?>
