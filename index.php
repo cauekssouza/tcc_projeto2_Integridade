@@ -1,34 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 define('TITLE', 'Verify Email');
 
 require_once '../assets/layouts/header.php';
 
 check_logged_in_butnot_verified();
 
-$statusMessage = $_SESSION['STATUS']['verify'] ?? '';
+$verificationMessage = $_SESSION['STATUS']['verify'] ?? '';
 
 ?>
 
 <main class="container" role="main">
-    <div class="row">
+    <div class="row align-items-center">
 
         <aside class="col-sm-3">
             <?php require '../assets/layouts/profile-card.php'; ?>
         </aside>
 
-        <section
-            class="col-sm-7 m-5 px-5 align-self-center bg-light rounded shadow-lg box-shadow verify-message"
-            aria-labelledby="verify-email-title"
-        >
+        <section class="col-sm-7 mx-sm-5 my-5 px-5 py-4 bg-light rounded shadow-lg verify-message">
             <form action="includes/sendverificationemail.inc.php" method="post">
-
                 <?php insert_csrf_token(); ?>
 
-                <h1
-                    id="verify-email-title"
-                    class="h5 text-center text-primary mb-5"
-                >
+                <h1 class="h5 text-center mb-5 text-primary">
                     Verify Your Email Address
                 </h1>
 
@@ -44,14 +39,17 @@ $statusMessage = $_SESSION['STATUS']['verify'] ?? '';
                     </button>.
                 </p>
 
-                <?php if ($statusMessage !== ''): ?>
+                <?php if ($verificationMessage !== ''): ?>
                     <div class="text-center mt-5">
-                        <p class="text-success mb-0">
-                            <?= htmlspecialchars($statusMessage, ENT_QUOTES, 'UTF-8'); ?>
+                        <p class="text-success mb-0" role="status">
+                            <?= htmlspecialchars(
+                                $verificationMessage,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ); ?>
                         </p>
                     </div>
                 <?php endif; ?>
-
             </form>
         </section>
 
